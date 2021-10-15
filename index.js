@@ -52,6 +52,7 @@ class JestReportPortal {
 
     // eslint-disable-next-line no-unused-vars
     onRunStart() {
+        console.log('run start triggered')
         const startLaunchObj = getStartLaunchObject(this.reportOptions);
         const { tempId, promise } = this.client.startLaunch(startLaunchObj);
 
@@ -61,6 +62,7 @@ class JestReportPortal {
 
     // eslint-disable-next-line no-unused-vars
     onTestResult(test, testResult) {
+        console.log('get test result triggered')
         testResult.testResults.forEach((t) => {
             this._startSuite(t.ancestorTitles[0], test.path);
             if (t.ancestorTitles.length !== 1) {
@@ -91,12 +93,14 @@ class JestReportPortal {
 
     // eslint-disable-next-line no-unused-vars
     onRunComplete() {
+        console.log('run completed')
         const { promise } = this.client.finishLaunch(this.tempLaunchId);
 
         promiseErrorHandler(promise);
     }
 
     _startSuite(suiteName, path) {
+        console.log('a test suite started')
         if (this.tempSuiteIds.get(suiteName)) {
             return;
         }
@@ -109,6 +113,7 @@ class JestReportPortal {
     }
 
     _startTest(test, testPath) {
+        console.log('a test started')
         if (this.tempTestIds.get(test.ancestorTitles.join('/'))) {
             return;
         }
@@ -125,6 +130,7 @@ class JestReportPortal {
     }
 
     _startStep(test, isRetried, testPath) {
+        console.log('a step started')
         const tempSuiteId = this.tempSuiteIds.get(test.ancestorTitles[0]);
         const fullStepName = getFullStepName(test);
         const codeRef = getCodeRef(testPath, fullStepName);
@@ -137,6 +143,7 @@ class JestReportPortal {
     }
 
     _finishStep(test, isRetried) {
+	console.log('a step finished')
         const errorMsg = test.failureMessages[0];
 
         switch (test.status) {
