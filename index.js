@@ -31,10 +31,12 @@ const logLevels = {
     WARN: 'warn',
 };
 
-const promiseErrorHandler = (promise) => {
-    promise.catch((err) => {
-        console.error(err);
-    });
+const promiseErrorHandler = async (promise) => {
+    try {
+        await promise
+    } catch (e) {
+        console.log(e)
+    }
 };
 
 
